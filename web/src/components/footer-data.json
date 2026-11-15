@@ -1,0 +1,127 @@
+{
+  "links": [
+    {
+      "links": [
+        {
+          "href": "https://www.eneba.com/about-us",
+          "label": "About us"
+        },
+        {
+          "href": "https://www.eneba.com/contacts",
+          "label": "Contact us"
+        },
+        {
+          "href": "https://jobs.ashbyhq.com/eneba",
+          "label": "Careers"
+        },
+        {
+          "href": "https://www.eneba.com/is-eneba-legit",
+          "label": "Eneba Trust & Transparency"
+        }
+      ],
+      "title": "About Eneba"
+    },
+    {
+      "links": [
+        {
+          "href": "https://www.eneba.com/support/article/how-to-buy-on-eneba",
+          "label": "How to buy"
+        },
+        {
+          "href": "https://www.eneba.com/collections",
+          "label": "Collections"
+        },
+        {
+          "href": "https://www.eneba.com/enebium",
+          "label": "Loyalty program"
+        },
+        {
+          "href": "https://www.eneba.com/promo/eneba-discount",
+          "label": "Discounts"
+        }
+      ],
+      "title": "Buy"
+    },
+    {
+      "links": [
+        {
+          "href": "https://www.eneba.com/support",
+          "label": "FAQ"
+        },
+        {
+          "href": "https://www.eneba.com/support/activation-guides",
+          "label": "How to activate game"
+        },
+        {
+          "href": "https://www.eneba.com/support",
+          "label": "Create a ticket"
+        },
+        {
+          "href": "https://www.eneba.com/support/article/refund-after-product-purchase",
+          "label": "Return policy"
+        },
+        {
+          "href": "https://www.eneba.com/support/article/how-do-i-report-illegal-content",
+          "label": "Content reporting"
+        }
+      ],
+      "title": "Help"
+    },
+    {
+      "links": [
+        {
+          "href": "https://www.eneba.com/hub/",
+          "label": "Gaming news"
+        },
+        {
+          "href": "https://www.eneba.com/giveaways",
+          "label": "Giveaways"
+        },
+        {
+          "href": "https://www.eneba.com/become-affiliate",
+          "label": "Become affiliate"
+        },
+        {
+          "href": "https://www.eneba.com/snakzy",
+          "label": "Snakzy: Play and Earn"
+        }
+      ],
+      "title": "Community"
+    },
+    {
+      "links": [
+        {
+          "href": "https://www.eneba.com/sell-with-eneba",
+          "label": "Sell on Eneba"
+        },
+        {
+          "href": "https://www.eneba.com/promo/advertise-with-us",
+          "label": "Advertise with Us"
+        }
+      ],
+      "title": "Business"
+    }
+  ],
+  "social": [
+    {
+      "href": "https://www.facebook.com/enebaglobal/",
+      "name": "Facebook"
+    },
+    {
+      "href": "https://x.com/eneba_games",
+      "name": "X"
+    },
+    {
+      "href": "https://www.instagram.com/enebagames/",
+      "name": "Instagram"
+    },
+    {
+      "href": "https://discord.gg/enebagames",
+      "name": "Discord"
+    },
+    {
+      "href": "https://www.reddit.com/r/Enebagames/",
+      "name": "Reddit"
+    }
+  ]
+}

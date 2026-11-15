@@ -1,0 +1,22 @@
+{
+  "buildCommand": "cd web && npm ci && node scripts/migrate.mjs && npm run build",
+  "outputDirectory": "web/dist",
+  "functions": {
+    "api/index.go": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.go"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "regions": [
+    "fra1"
+  ]
+}

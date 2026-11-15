@@ -1,0 +1,16 @@
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { ChevronRight, Diamond, Gamepad2, Heart, LogOut, ShoppingCart, UserRound, Wallet, CircleDollarSign } from "lucide-react";
+import { useWallet } from "../lib/useWallet";
+import { useMoney } from "../lib/useMoney";
+import { useAuth } from "../store/auth";
+import { useTranslation } from "../store/preferences";
+export function UserAvatar() { return <svg className="user-robot-avatar" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#29115e" stroke="#ad8ddb"/><path d="M24 7v6" stroke="#ffdf00" strokeWidth="2"/><circle cx="24" cy="6" r="2" fill="#ffdf00"/><rect x="9" y="15" width="30" height="24" rx="7" fill="#d48a00"/><path d="M7 22v10m34-10v10" stroke="#ffbc22" strokeWidth="3"/><rect x="14" y="21" width="20" height="10" rx="1" fill="#312914"/><path d="M19 24v4m10-4v4" stroke="#67e9bb" strokeWidth="2"/><path d="M18 35h12" stroke="white" strokeWidth="3" strokeDasharray="2 1"/></svg>; }
+export default function UserMenu() {
+ const {user,logout}=useAuth(); const money=useMoney(); const wallet=useWallet(); const t=useTranslation(); const [open,setOpen]=useState(false); const [error,setError]=useState(''); const root=useRef<HTMLDivElement>(null); const location=useLocation();
+ useEffect(()=>setOpen(false),[location.pathname,location.search]);
+ useEffect(()=>{if(!open)return; const outside=(e:PointerEvent)=>{if(!root.current?.contains(e.target as Node))setOpen(false);}; const key=(e:KeyboardEvent)=>{if(e.key==='Escape'){setOpen(false);root.current?.querySelector('button')?.focus();}};document.addEventListener('pointerdown',outside);document.addEventListener('keydown',key);return()=>{document.removeEventListener('pointerdown',outside);document.removeEventListener('keydown',key);};},[open]);
+ if(!user)return null;
+ const links=[[Heart,'Favorites','/wishlist'],[UserRound,'My account','/account'],[Wallet,'Balance','/account/balance'],[Diamond,'Enebium','/account/rewards'],[CircleDollarSign,'Cashback','/account/cashback'],[ShoppingCart,'My orders','/account/orders'],[Gamepad2,'Key library','/account/keys']] as const;
+ return <div ref={root} className="user-menu-root"><button className="user-avatar-trigger" aria-label={t('User menu')} aria-expanded={open} aria-controls="user-account-menu" onClick={()=>setOpen(!open)}><UserAvatar/></button>{open&&<div id="user-account-menu" className="user-account-menu"><div className="user-menu-identity"><UserAvatar/><div><strong>{user.username}</strong><span>{user.email}</span></div></div><Link className="user-menu-progress" to="/account"><strong>{t('Your account overview')}</strong><div className="account-progress-track"><span style={{width:'100%'}}/></div><span>{t('Manage your profile and purchases')}</span><ChevronRight size={20}/></Link><nav aria-label={t('User menu')}>{links.map(([Icon,label,to],index)=><Link key={to} to={to} className={index===0?'user-menu-favorites':''}><Icon size={21}/><span>{t(label)}</span>{label==='Balance'&&<b>{money(wallet.data?.total_cents??0)}</b>}</Link>)}<button onClick={async()=>{try{await logout();setOpen(false);}catch{setError(t('Unable to log out. Please try again.'));}}}><LogOut size={21}/>{t('Log out')}</button></nav>{error&&<p role="alert">{error}</p>}</div>}</div>;
+}
