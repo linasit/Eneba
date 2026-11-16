@@ -32,6 +32,38 @@ func rows(w http.ResponseWriter, r *http.Request, db *pgxpool.Pool, sql string, 
 }
 
 func Mount(r chi.Router, db *pgxpool.Pool) {
+	r.Get("/promotions/cheap-games", func(w http.ResponseWriter, req *http.Request) {
+		var hero json.RawMessage
+		if err := db.QueryRow(req.Context(), `SELECT config FROM promotion_pages WHERE slug='cheap-games'`).Scan(&hero); err != nil {
+			httpx.Error(w, 500, "Unable to load promotion")
+			return
+		}
+		rs, err := db.Query(req.Context(), `SELECT slug,config FROM promotion_sections WHERE page_slug='cheap-games' ORDER BY position`)
+		if err != nil {
+			httpx.Error(w, 500, "Unable to load promotion")
+			return
+		}
+		sections, err := pgx.CollectRows(rs, pgx.RowToMap)
+		if err != nil {
+			httpx.Error(w, 500, "Unable to load promotion")
+			return
+		}
+		cache(w)
+		httpx.JSON(w, 200, map[string]any{"hero": hero, "sections": sections})
+	})
+	r.Get("/promotions/cheap-games/sections/{section}", func(w http.ResponseWriter, req *http.Request) {
+		section := chi.URLParam(req, "section")
+		var exists bool
+		if err := db.QueryRow(req.Context(), `SELECT EXISTS(SELECT 1 FROM promotion_sections WHERE page_slug='cheap-games' AND slug=$1)`, section).Scan(&exists); err != nil {
+			httpx.Error(w, 500, "Unable to load promotion")
+			return
+		}
+		if !exists {
+			httpx.Error(w, 404, "Promotion section not found")
+			return
+		}
+		rows(w, req, db, productCardSQL+` AND p.id IN(SELECT product_id FROM home_product_groups WHERE group_slug='cheap-'||$1) ORDER BY(SELECT position FROM home_product_groups WHERE product_id=p.id AND group_slug='cheap-'||$1)`, section)
+	})
 	r.Get("/home/layout", func(w http.ResponseWriter, req *http.Request) {
 		rows(w, req, db, `SELECT id,type,title,config FROM home_blocks WHERE enabled ORDER BY position`)
 	})

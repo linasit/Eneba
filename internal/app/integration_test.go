@@ -52,7 +52,7 @@ func TestMarketplace(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer pool.Close()
-	for _, name := range []string{"001_schema.sql", "002_seed.sql", "003_homepage_reference.sql", "004_product_seller_offers.sql", "005_store_filters.sql", "006_gift_card_products.sql", "007_upcoming_games.sql", "008_account_settings.sql", "009_demo_wallet.sql", "010_home_content.sql"} {
+	for _, name := range []string{"001_schema.sql", "002_seed.sql", "003_homepage_reference.sql", "004_product_seller_offers.sql", "005_store_filters.sql", "006_gift_card_products.sql", "007_upcoming_games.sql", "008_account_settings.sql", "009_demo_wallet.sql", "010_home_content.sql", "011_cheap_games.sql", "012_cheap_games_carousels.sql"} {
 		b, e := os.ReadFile(filepath.Join("..", "..", "migrations", name))
 		if e != nil {
 			t.Fatal(e)
@@ -98,6 +98,55 @@ func TestMarketplace(t *testing.T) {
 		t.Fatal("missing cookie")
 		return nil
 	}
+	t.Run("cheap games promotion has live catalog sections", func(t *testing.T) {
+		w := request("GET", "/api/promotions/cheap-games", "", "", nil)
+		must(w, 200)
+		var page struct {
+			Hero     map[string]any
+			Sections []struct {
+				Slug   string
+				Config map[string]any
+			}
+		}
+		if err := json.Unmarshal(w.Body.Bytes(), &page); err != nil {
+			t.Fatal(err)
+		}
+		if len(page.Sections) != 4 || page.Hero["image"] == nil {
+			t.Fatalf("incomplete promotion: %+v", page)
+		}
+		badge, ok := page.Hero["trustpilot"].(map[string]any)
+		if !ok || badge["review_count"] != "334 174" || badge["href"] != "https://www.trustpilot.com/review/eneba.com" {
+			t.Fatal("missing configured review badge")
+		}
+		for _, section := range page.Sections {
+			result := request("GET", "/api"+section.Config["endpoint"].(string), "", "", nil)
+			must(result, 200)
+			var products []struct {
+				ID          int
+				PriceCents  int `json:"price_cents"`
+				Platform    string
+				ProductType string `json:"product_type"`
+			}
+			if err := json.Unmarshal(result.Body.Bytes(), &products); err != nil {
+				t.Fatal(err)
+			}
+			if len(products) < 10 {
+				t.Fatalf("not enough carousel products: %s", section.Slug)
+			}
+			for _, p := range products {
+				if p.PriceCents > 1000 {
+					t.Fatal("promotion product exceeds advertised price range")
+				}
+				if section.Slug == "xbox-under-10" && p.Platform != "Xbox" {
+					t.Fatal("wrong Xbox section platform")
+				}
+				if section.Slug == "points-under-10" && p.ProductType != "gaming-ecards" {
+					t.Fatal("wrong points type")
+				}
+			}
+		}
+		must(request("GET", "/api/promotions/cheap-games/sections/missing", "", "", nil), 404)
+	})
 	t.Run("homepage content is database driven", func(t *testing.T) {
 		for _, path := range []string{"/api/home/layout", "/api/home/gift-brands", "/api/home/genres"} {
 			must(request("GET", path, "", "", nil), 200)
@@ -280,11 +329,11 @@ func TestMarketplace(t *testing.T) {
 				Name string `json:"name"`
 			}
 		}
-		if err := json.Unmarshal(w.Body.Bytes(), &cards); err != nil || len(cards.Items) != 7 {
-			t.Fatal("expected seven gift cards", err, len(cards.Items))
+		if err := json.Unmarshal(w.Body.Bytes(), &cards); err != nil || len(cards.Items) != 17 {
+			t.Fatal("expected seventeen gift cards and game-point products", err, len(cards.Items))
 		}
 		for _, p := range cards.Items {
-			if !strings.Contains(p.Name, "Card") && !strings.Contains(p.Name, "Spotify Premium") {
+			if !strings.Contains(p.Name, "Card") && !strings.Contains(p.Name, "Spotify Premium") && !strings.HasPrefix(p.Name, "Roblox") && !strings.HasPrefix(p.Name, "Valorant") && !strings.HasPrefix(p.Name, "PUBG") {
 				t.Fatal("category leaked unrelated games")
 			}
 		}
@@ -327,8 +376,8 @@ func TestMarketplace(t *testing.T) {
 			Slug    string `json:"slug"`
 			OfferID int64  `json:"offer_id"`
 		}
-		if err := json.Unmarshal(w.Body.Bytes(), &cards); err != nil || len(cards) != 13 {
-			t.Fatalf("expected thirteen released game cards, got %s (%v)", w.Body.String(), err)
+		if err := json.Unmarshal(w.Body.Bytes(), &cards); err != nil || len(cards) != 15 {
+			t.Fatalf("expected fifteen released game cards, got %s (%v)", w.Body.String(), err)
 		}
 		if cards[0].Slug != "minecraft-java-bedrock" {
 			t.Fatalf("highest popularity released game should be first, got %s", cards[0].Slug)
@@ -638,7 +687,7 @@ func TestMarketplace(t *testing.T) {
 					Items []json.RawMessage
 					Total int
 				}
-				if err := json.Unmarshal(w.Body.Bytes(), &result); err != nil || w.Code != 200 || result.Total != facet.Count || len(result.Items) != facet.Count {
+				if err := json.Unmarshal(w.Body.Bytes(), &result); err != nil || w.Code != 200 || result.Total != facet.Count || len(result.Items) != min(facet.Count, 24) {
 					t.Fatalf("facet %s=%s: expected %d, response %s (%v)", facet.Facet, facet.Value, facet.Count, w.Body.String(), err)
 				}
 			}
@@ -650,7 +699,7 @@ func TestMarketplace(t *testing.T) {
 			}
 		}
 
-		for query, expected := range map[string]int{"type=games,gaming-ecards": 26, "platform=steam,psn": 18, "region=global,europe": 15} {
+		for query, expected := range map[string]int{"type=games,gaming-ecards": 60, "platform=steam,psn": 29, "region=global,europe": 49} {
 			w = request("GET", "/api/products?"+query, "", "", nil)
 			var result struct{ Total int }
 			if err := json.Unmarshal(w.Body.Bytes(), &result); err != nil || result.Total != expected {

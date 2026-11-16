@@ -1,3 +1,4 @@
+import CheapGames from "./CheapGames";
 import { useTranslation } from "../store/preferences";
 import StoreSort from "../components/StoreSort";
 import StoreGuide from "../components/StoreGuide";
@@ -10,6 +11,10 @@ import ProductCard from "../components/ProductCard";
 import StoreFilters, { type Facet, type FilterSetter, countries, filterNames, facetLabels } from "../components/StoreFilters";
 
 export default function Store() {
+ const [sp]=useSearchParams();
+ return sp.get("sort")==="discount" && sp.size===1 ? <CheapGames/> : <StoreCatalog/>;
+}
+function StoreCatalog() {
   const t = useTranslation();
   const [sp,setSp] = useSearchParams();
   const [filtersOpen,setFiltersOpen] = useState(false);

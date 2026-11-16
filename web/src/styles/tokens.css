@@ -3539,3 +3539,108 @@ input[type="checkbox"] {
  .site-header .main-header .account-actions { gap:20px; }
 }
 @media(min-width:1101px) { .main-header .user-robot-avatar { width:32px; height:32px; } }
+/* Cheap-games promotion, with reusable live-catalog cards. */
+.cheap-games { background:#4618ac; }
+.cheap-games .container { max-width:1280px; }
+.cheap-hero { position:relative; overflow:hidden; background:linear-gradient(#2d1068,#4618ac); }
+.cheap-hero::before { content:""; position:absolute; inset:0; background:url("/reference/cheap-games/hero-curve.svg") top right / 100% 100% no-repeat; pointer-events:none; }
+.cheap-hero-content { display:grid; position:relative; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:0; padding-top:100px; padding-bottom:133px; min-height:549px; }
+.cheap-hero h1 { font-size:48px; line-height:1.25; max-width:440px; margin:0 0 18px; letter-spacing:-.5px; }
+.cheap-hero p { font-size:16px; line-height:1.875; max-width:600px; margin:0 0 16px; }
+.cheap-hero img { position:absolute; top:50px; right:40px; width:calc((100% - 80px)/2); max-width:600px; height:auto; object-fit:contain; }
+.cheap-save { display:inline-flex; align-items:center; justify-content:center; min-width:200px; min-height:36px; line-height:22px; padding:7px 24px; background:#ffdf00; color:black; font-weight:700; }
+.cheap-save:hover { background:#ffe94b; }
+.cheap-hero .cheap-hero-note { font-size:16px; font-style:italic; margin:36px 0 0; }
+.cheap-popular { padding-top:48px; padding-bottom:48px; scroll-margin-top:20px; }
+.cheap-games h2 { font-size:18px; line-height:24px; margin:0 0 28px; font-weight:700; }
+.cheap-product-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:20px; }
+.cheap-band { padding:38px 0 48px; }
+.cheap-band:nth-of-type(odd) { background:#39128b; }
+.cheap-games .homepage-product-row { margin:0; padding:0; }
+.cheap-games .section-heading { margin:0 0 28px; }
+.cheap-games .section-heading h2 { margin:0; }
+.cheap-games .home-product-track { gap:20px; }
+.cheap-games .home-product-track > .product-card { flex:0 0 calc((100% - 80px)/5); }
+.cheap-games .product-card { --card-rest-info-height:210px; --card-actions-height:82px; --card-inset:16px; border:2px solid #63dfcb; background:#200b4d; border-radius:0; }
+.cheap-games .product-card .cover-wrap { aspect-ratio:224/300; }
+.cheap-games .product-card .cover-wrap img { width:100%; height:100%; object-fit:cover; }
+.cheap-games .product-card .product-info { padding:16px; }
+.cheap-games .product-title h3 { font-size:18px; line-height:26px; font-weight:700; }
+.cheap-games .region-label { font-size:17px; font-weight:700; margin:6px 0; }
+.cheap-games .card-pricing { margin-top:0; }
+.cheap-games .price-label,.cheap-games .price-old,.cheap-games .discount-pct { font-size:17px; font-weight:700; }
+.cheap-games .product-card .price { font-size:22px; line-height:26px; }
+.cheap-games .delivery-note { font-size:17px; font-weight:700; color:#9dff00; margin-top:4px; }
+.cheap-cashback-badge { position:absolute; left:0; bottom:28px; background:#63dfcb; color:#200b4d; padding:5px 7px; text-transform:uppercase; font-size:17px; font-weight:700; z-index:2; }
+.cheap-games .platform-strip { font-size:17px; height:24px; padding:1px 6px; }
+.cheap-games .product-hover-cart,.cheap-games .product-hover-offers { font-size:17px; padding:6px; line-height:22px; }
+.cheap-games .product-hover-actions { gap:10px; }
+.cheap-games .home-product-show-all { margin:20px auto 0; min-width:180px; padding:9px 24px; font-size:17px; }
+.cheap-games .home-product-position { display:block; margin-top:16px; }
+.cheap-loading { height:430px; }
+@media(max-width:1000px) { .cheap-hero-content { gap:30px; padding-top:64px; padding-bottom:80px; min-height:460px; }.cheap-hero h1 { font-size:38px; }.cheap-games .home-product-track > .product-card { flex-basis:calc((100% - 40px)/3); }.cheap-product-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:600px) { .cheap-hero-content { grid-template-columns:1fr; min-height:0; padding-top:32px; padding-bottom:32px; gap:12px; }.cheap-hero h1 { font-size:32px; }.cheap-hero p { font-size:15px; line-height:1.7; }.cheap-hero img { position:static; width:100%; max-width:340px; margin:auto; }.cheap-games .home-product-track > .product-card { flex-basis:72%; }.cheap-product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }.cheap-games .product-title h3 { font-size:14px; line-height:20px; }.cheap-games .product-card .product-info { padding:10px; }.cheap-games .region-label,.cheap-games .delivery-note,.cheap-games .product-hover-cart,.cheap-games .product-hover-offers { font-size:13px; }.cheap-cashback-badge { font-size:12px; }.cheap-popular { padding-top:26px; }.cheap-band { padding:30px 0; } }
+.cheap-games .product-card .product-title { display:block; height:52px; min-height:52px; margin:0; }
+.cheap-games .product-card .product-title h3 { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; height:52px; max-height:52px; margin:0; }
+.cheap-games .region-label { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:22px; height:22px; }
+.cheap-games .product-price-heading { min-height:22px; line-height:22px; }
+.cheap-games .cheap-cashback-badge { top:calc(100% - 34px); bottom:auto; }
+@media(max-width:600px) { .cheap-games .product-card .product-title,.cheap-games .product-card .product-title h3 { height:40px; min-height:40px; max-height:40px; } }
+.cheap-games .product-card { --card-rest-info-height:220px; --card-actions-height:110px; }
+.cheap-games .cheap-cashback-badge { top:auto; bottom:24px; }
+.cheap-games .home-product-track { scrollbar-width:none; }
+.cheap-games .home-product-track::-webkit-scrollbar { display:none; }
+.cheap-games .platform-strip { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:22px; }
+.cheap-games .platform-strip img { flex-shrink:0; }
+
+/* Review strip from the cheap-games promotion reference. */
+.cheap-trustpilot{background:#39128b;min-height:130px;display:flex;align-items:center;justify-content:center;padding:32px 20px}
+.cheap-trustpilot>a{display:flex;align-items:center;justify-content:center;gap:12px;color:#fff;text-decoration:none;font-family:Arial,sans-serif;font-size:12px}
+.cheap-trustpilot>a:focus-visible{outline:2px solid #fff;outline-offset:8px}
+.cheap-trustpilot-stars{display:flex;gap:3px}
+.cheap-trustpilot-stars>span{width:18px;height:18px;text-align:center;font-size:18px;line-height:18px;color:white}
+.cheap-trustpilot-brand{display:flex;align-items:center;font-size:16px;gap:3px}
+.cheap-trustpilot-brand>span{color:#00b67a;font-size:26px;line-height:1}
+@media(max-width:600px){.cheap-trustpilot>a{flex-wrap:wrap;gap:10px}.cheap-trustpilot>a>span:first-child{flex-basis:100%;text-align:center}}
+
+/* Cheap-games carousel reference: 224px cards, 20px gutters, compact 160px details. */
+:is(.cheap-band,.cheap-popular) .section-heading { margin-bottom:32px; }
+:is(.cheap-band,.cheap-popular) .product-card { border-width:1px; --card-rest-info-height:160px; --card-actions-height:104px; --card-button-height:36px; --card-inset:16px; }
+:is(.cheap-band,.cheap-popular) .product-card .cover-wrap { aspect-ratio:222/300; }
+:is(.cheap-band,.cheap-popular) .product-card .product-info { padding:16px; }
+:is(.cheap-band,.cheap-popular) .product-card .product-title,:is(.cheap-band,.cheap-popular) .product-card .product-title h3 { height:36px; min-height:36px; max-height:36px; }
+:is(.cheap-band,.cheap-popular) .product-card .product-title h3 { font-size:12px; line-height:18px; }
+:is(.cheap-band,.cheap-popular) .region-label { font-size:12px; height:18px; line-height:18px; margin:6px 0; }
+:is(.cheap-band,.cheap-popular) .price-label,:is(.cheap-band,.cheap-popular) .price-old,:is(.cheap-band,.cheap-popular) .discount-pct { font-size:12px; }
+:is(.cheap-band,.cheap-popular) .product-price-heading { min-height:18px; line-height:18px; margin-bottom:0; }
+:is(.cheap-band,.cheap-popular) .product-card .price { font-size:22px; line-height:26px; }
+:is(.cheap-band,.cheap-popular) .delivery-note { font-size:12px; line-height:18px; margin-top:4px; }
+:is(.cheap-band,.cheap-popular) .platform-strip { height:22px; font-size:10px; line-height:20px; gap:5px; }
+:is(.cheap-band,.cheap-popular) .platform-strip img { width:16px; height:16px; }
+:is(.cheap-band,.cheap-popular) .cheap-cashback-badge { bottom:22px; font-size:12px; line-height:18px; padding:6px; }
+:is(.cheap-band,.cheap-popular) .product-hover-actions { gap:10px; padding:6px 16px 16px; }
+:is(.cheap-band,.cheap-popular) .product-hover-cart,:is(.cheap-band,.cheap-popular) .product-hover-offers { font-size:14px; line-height:20px; height:36px; min-height:36px; padding:4px; }
+:is(.cheap-band,.cheap-popular) .home-product-track { padding-bottom:0; }
+:is(.cheap-band,.cheap-popular) .home-product-position { height:5px; margin-top:14px; }
+:is(.cheap-band,.cheap-popular) .home-product-position::-webkit-slider-thumb { height:5px; }
+:is(.cheap-band,.cheap-popular) .home-product-show-all { width:180px; min-width:180px; height:36px; margin-top:20px; padding:7px 16px; font-size:14px; line-height:20px; }
+@media(hover:hover) and (pointer:fine) { :is(.cheap-band,.cheap-popular) .wishlist-toggle { opacity:0; }:is(.cheap-band,.cheap-popular) .product-card:hover .wishlist-toggle,:is(.cheap-band,.cheap-popular) .product-card:focus-within .wishlist-toggle { opacity:1; } }
+
+:is(.cheap-band,.cheap-popular)[data-promotion-section="xbox-under-10"] .region-label { color:#f85b88; }
+@media(hover:hover) and (pointer:fine) {
+ :is(.cheap-band,.cheap-popular) .cheap-cashback-badge { transition:transform .2s ease; }
+ :is(.cheap-band,.cheap-popular) .product-card:hover .cheap-cashback-badge,:is(.cheap-band,.cheap-popular) .product-card:focus-within .cheap-cashback-badge { transform:translateY(-104px); }
+}
+@media(prefers-reduced-motion:reduce) { :is(.cheap-band,.cheap-popular) .cheap-cashback-badge { transition:none; } }
+:is(.cheap-band,.cheap-popular) .product-card .product-hover-actions > button,:is(.cheap-band,.cheap-popular) .product-card .product-hover-actions > a { font-size:14px; line-height:20px; height:36px; min-height:36px; padding:4px; }
+
+.cheap-popular > h2 { margin-bottom:32px; }
+.cheap-popular .platform-strip { justify-content:center; font-weight:700; }
+.cheap-popular .product-card:has(.platform-strip img[src$="/xbox.svg"]) .region-label { color:#f85b88; }
+
+/* Reference navigation: compact badge and full-height selected tabs. */
+@media(min-width:601px) {
+ .site-header .category-nav { height:50px; }
+ .site-header .category-nav > a[aria-current="page"]:not(.header-gta-link) { color:#ffdf00; background:#200b4d; }
+ .site-header .category-nav .header-gta-link { min-width:80px; width:80px; height:36px; min-height:36px; padding:7px 12px; border-radius:6px; font-size:16px; line-height:20px; }
+}

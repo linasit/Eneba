@@ -12,6 +12,7 @@ import {
   Search,
   X,
 } from "lucide-react";
+import CheapGames from "./pages/CheapGames";
 import Footer from "./components/Footer";
 import Brand from "./components/Brand";
 import ReactDOM from "react-dom/client";
@@ -35,6 +36,9 @@ import Account from "./pages/Account";
 import Login from "./pages/Login"; // login + register forms calling useAuth()
 
 function Header() {
+  const navigationLocation=useLocation();
+  const navigationQuery=new URLSearchParams(navigationLocation.search);
+  const currentCategory=navigationLocation.pathname==="/store"?navigationQuery.get("category"):null;
   const t = useTranslation();
   const language = usePreferences(s=>s.language);
   const { user, logout } = useAuth();
@@ -98,11 +102,10 @@ function Header() {
           <button className="category-menu category-drawer-trigger" aria-haspopup="dialog" aria-controls="header-categories" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)}>
             <Menu size={23} /> {t("Categories")}
           </button>
-          <Link to="/store?sort=discount">{t("Cheap Games")}</Link>
-          <Link to="/store?category=software">{t("Software")}</Link>
-          <Link to="/store?category=egift-cards">{language === "lt" ? "E. kortelės" : t("eGift Cards")}</Link>
-          <Link to="/store?category=gaming-ecards">{t("Eneba Gift Cards")}</Link>
-          <Link to="/store?q=Probably%20Stolen">{t("PROBABLY STOLEN")}</Link>
+          <Link aria-current={navigationLocation.pathname==="/store"&&navigationQuery.get("sort")==="discount"?"page":undefined} to="/store?sort=discount">{t("Cheap Games")}</Link>
+          <Link aria-current={currentCategory==="software"?"page":undefined} to="/store?category=software">{t("Software")}</Link>
+          <Link aria-current={currentCategory==="egift-cards"?"page":undefined} to="/store?category=egift-cards">{language === "lt" ? "E. kortelės" : t("eGift Cards")}</Link>
+          <Link aria-current={currentCategory==="gaming-ecards"?"page":undefined} to="/store?category=gaming-ecards">{t("Eneba Gift Cards")}</Link>
           <Link className="header-gta-link" to="/store?q=Grand%20Theft%20Auto">{t("GTA 6")}</Link>
         </nav>
       </div>
@@ -138,6 +141,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/store" element={<Store />} />
+            <Route path="/promo/cheap-games" element={<CheapGames/>}/>
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/p/:slug" element={<Product />} />
             <Route path="/login" element={<Login />} />

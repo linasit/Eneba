@@ -7,14 +7,14 @@ import { ProductCard as P } from "../lib/api";
 import { useCart } from "../store/cart";
 import { useWishlist } from "../store/wishlist";
 const platformIcon = (p: string) =>
-  p === "Spotify" ? "spotify" : p === "Steam"
+  p === "Rockstar Games Launcher" ? "rockstar" : p === "Roblox" ? "roblox" : p === "Spotify" ? "spotify" : p === "Steam"
     ? "steam"
     : p === "Xbox"
       ? "xbox"
       : p === "PSN" || p === "PlayStation"
         ? "psn"
         : "games";
-export default function ProductCard({ p, revealActions = false }: { p: P; revealActions?: boolean }) {
+export default function ProductCard({ p, revealActions = false, cashback }: { p: P; revealActions?: boolean; cashback?:number }) {
   const t = useTranslation();
   const eur = useMoney();
   const pct = p.old_price_cents
@@ -54,13 +54,14 @@ export default function ProductCard({ p, revealActions = false }: { p: P; reveal
         aria-hidden="true"
       >
         <img src={p.cover_url} alt="" loading="lazy" />
+        {cashback&&<span className="cheap-cashback-badge">⊕ {t("Cashback")}</span>}
         {!revealActions && platformStrip}
       </Link>
       <div className="product-card-body">
       {revealActions && platformStrip}
       <div className="product-info">
         <Link to={`/p/${p.slug}`} className="product-title">
-          <h3>{t(title)}</h3>
+          <h3 title={t(title)}>{t(title)}</h3>
         </Link>
         <div
           className={`region-label ${p.region === "Global" ? "global-region" : ""}`}
@@ -80,7 +81,7 @@ export default function ProductCard({ p, revealActions = false }: { p: P; reveal
           <Link to={`/p/${p.slug}`} className="price">
             {eur(p.price_cents)}
           </Link>
-          <div className="delivery-note">{t("Instant digital delivery")}</div>
+          <div className="delivery-note">{cashback?`${cashback}% ${t("back")}`:t("Instant digital delivery")}</div>
         </div>
         {!revealActions && <button
           className="quick-buy"
@@ -98,7 +99,7 @@ export default function ProductCard({ p, revealActions = false }: { p: P; reveal
         </button>}
       </div>
       {revealActions && <div className="product-hover-actions">
-        <button className="product-hover-cart" onClick={buy} aria-label={added ? t("{0} added to cart", {0: p.name}) : t("Add {0} to cart", {0: p.name})}>{added ? <> <Check size={18} /> {t("Added to cart")}</> : t("Add to cart")}</button>
+        <button className="product-hover-cart" onClick={buy} aria-label={added ? t("{0} added to cart", {0: p.name}) : t("Add {0} to cart", {0: p.name})}>{added ? <> <Check size={18} /> {t("Added to cart")}</> : t(cashback?"Add product to cart":"Add to cart")}</button>
         <Link className="product-hover-offers" to={`/p/${p.slug}`}>{t("View offers")}<span className="sr-only"> {t(" for ")}{t(p.name)}</span></Link>
       </div>}
       </div>
