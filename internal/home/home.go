@@ -70,7 +70,7 @@ func Mount(r chi.Router, db *pgxpool.Pool) {
 
 	r.Get("/home/banners", func(w http.ResponseWriter, req *http.Request) {
 		rows(w, req, db, `
-		  SELECT id,title,title_lt,subtitle,image_url,thumbnail_url,cta_label,cta_url FROM banners
+		  SELECT id,title,title_lt,subtitle,image_url,thumbnail_url,cta_label,cta_url,direct_link,image_position,thumbnail_position FROM banners
 		  WHERE active AND (starts_at IS NULL OR starts_at<=now()) AND (ends_at IS NULL OR ends_at>=now())
 		  ORDER BY position`)
 	})

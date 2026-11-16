@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 interface Banner {
   id: number;
+  direct_link?:boolean;
+  image_position?:string;
+  thumbnail_position?:string;
   title: string;
   title_lt?:string;
   image_url: string;
@@ -32,7 +35,7 @@ export default function PromoCarousel({endpoint}:{endpoint:string}) {
       matchMedia("(prefers-reduced-motion: reduce)").matches
     )
       return;
-    const id = setInterval(() => setActive((x) => (x + 1) % data.length), 6500);
+    const id = setInterval(() => setActive(x => { let next=(x+1)%data.length; for(let count=0;count<data.length&&data[next].direct_link;count++) next=(next+1)%data.length; return next; }), 6500);
     return () => clearInterval(id);
   }, [hovered, data.length]);
   if (isLoading) return <div className="campaign-skeleton skeleton" />;
@@ -43,7 +46,7 @@ export default function PromoCarousel({endpoint}:{endpoint:string}) {
   };
   const step = (n: number) => {
     setExpanded(true);
-    setActive((x) => (x + n + data.length) % data.length);
+    setActive(x => { let next=(x+n+data.length)%data.length; for(let count=0;count<data.length&&data[next].direct_link;count++) next=(next+n+data.length)%data.length; return next; });
   };
   return (
     <section
@@ -73,10 +76,11 @@ export default function PromoCarousel({endpoint}:{endpoint:string}) {
             key={b.id}
             className={`campaign-panel ${i === current ? "active" : ""}`}
             style={{
+              backgroundPosition:i===current ? b.image_position ?? "center center" : b.thumbnail_position ?? "right center",
               backgroundImage: `url("${i === current ? b.image_url : b.thumbnail_url || b.image_url}")`,
             }}
           >
-            {i === current ? (
+            {i === current || b.direct_link ? (
               <Link
                 className="campaign-link"
                 to={b.cta_url}

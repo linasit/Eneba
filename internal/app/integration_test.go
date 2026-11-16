@@ -52,7 +52,7 @@ func TestMarketplace(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer pool.Close()
-	for _, name := range []string{"001_schema.sql", "002_seed.sql", "003_homepage_reference.sql", "004_product_seller_offers.sql", "005_store_filters.sql", "006_gift_card_products.sql", "007_upcoming_games.sql", "008_account_settings.sql", "009_demo_wallet.sql", "010_home_content.sql", "011_cheap_games.sql", "012_cheap_games_carousels.sql"} {
+	for _, name := range []string{"001_schema.sql", "002_seed.sql", "003_homepage_reference.sql", "004_product_seller_offers.sql", "005_store_filters.sql", "006_gift_card_products.sql", "007_upcoming_games.sql", "008_account_settings.sql", "009_demo_wallet.sql", "010_home_content.sql", "011_cheap_games.sql", "012_cheap_games_carousels.sql", "013_home_slider.sql", "014_gift_card_slider.sql"} {
 		b, e := os.ReadFile(filepath.Join("..", "..", "migrations", name))
 		if e != nil {
 			t.Fatal(e)
@@ -98,6 +98,27 @@ func TestMarketplace(t *testing.T) {
 		t.Fatal("missing cookie")
 		return nil
 	}
+	t.Run("homepage slider uses Lithuanian reference panels", func(t *testing.T) {
+		w := request("GET", "/api/home/banners", "", "", nil)
+		must(w, 200)
+		var banners []struct {
+			Image    string `json:"image_url"`
+			Href     string `json:"cta_url"`
+			Direct   bool   `json:"direct_link"`
+			Position string `json:"image_position"`
+		}
+		if err := json.Unmarshal(w.Body.Bytes(), &banners); err != nil {
+			t.Fatal(err)
+		}
+		if len(banners) != 4 || banners[0].Position != "left center" || banners[1].Href != "/store?sort=discount" || banners[2].Href != "/store?category=software" || banners[3].Direct || banners[3].Position != "right center" || banners[3].Href != "/store?category=egift-cards" {
+			t.Fatalf("unexpected slider panels: %+v", banners)
+		}
+		for _, banner := range banners {
+			if !strings.HasPrefix(banner.Image, "/reference/banners/lt-") {
+				t.Fatal("missing localized slider artwork")
+			}
+		}
+	})
 	t.Run("cheap games promotion has live catalog sections", func(t *testing.T) {
 		w := request("GET", "/api/promotions/cheap-games", "", "", nil)
 		must(w, 200)

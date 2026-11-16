@@ -1,0 +1,6 @@
+ALTER TABLE banners ADD COLUMN direct_link boolean NOT NULL DEFAULT false;
+ALTER TABLE banners ADD COLUMN image_position text NOT NULL DEFAULT 'center center';
+UPDATE banners SET title='Grand Theft Auto VI',title_lt='Grand Theft Auto VI',image_url='/reference/banners/lt-home-reference.png',thumbnail_url='/reference/banners/lt-0-thumb.jpg',cta_url='/store?q=Grand%20Theft%20Auto',image_position='left center',direct_link=false WHERE active AND position=0;
+UPDATE banners SET title='Games up to 90% off',title_lt='Žaidimai iki -90%',image_url='/reference/banners/lt-1-wide.jpg',thumbnail_url='/reference/banners/lt-1-thumb.jpg',cta_url='/store?sort=discount',direct_link=false WHERE active AND position=1;
+UPDATE banners SET title='Software for less',title_lt='Softas pigiau',image_url='/reference/banners/lt-2-wide.jpg',thumbnail_url='/reference/banners/lt-2-thumb.jpg',cta_url='/store?category=software',direct_link=false WHERE active AND position=2;
+UPDATE banners SET title='Gift cards for every hobby',title_lt='Kortelės visiems pomėgiams',image_url='/reference/banners/lt-home-reference.png',thumbnail_url='/reference/banners/lt-home-reference.png',cta_url='/store?category=egift-cards',direct_link=true WHERE active AND position=3;

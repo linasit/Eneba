@@ -3644,3 +3644,11 @@ input[type="checkbox"] {
  .site-header .category-nav > a[aria-current="page"]:not(.header-gta-link) { color:#ffdf00; background:#200b4d; }
  .site-header .category-nav .header-gta-link { min-width:80px; width:80px; height:36px; min-height:36px; padding:7px 12px; border-radius:6px; font-size:16px; line-height:20px; }
 }
+
+/* Four-panel Lithuanian homepage reference, with a 70/10/10/10 split. */
+.home-banner-block .campaign-carousel,.home-banner-block .campaign-skeleton { height:20.26vw; min-height:180px; max-height:none; }
+.home-banner-block .campaign-panel,.home-banner-block .campaign-carousel.is-expanded .campaign-panel { flex:0 0 10%; background-size:auto 100%; }
+.home-banner-block .campaign-panel.active,.home-banner-block .campaign-carousel.is-expanded .campaign-panel.active { flex-basis:70%; }
+@media(max-width:600px) { .home-banner-block .campaign-carousel,.home-banner-block .campaign-skeleton { height:42vw; min-height:160px; }.home-banner-block .campaign-panel,.home-banner-block .campaign-carousel.is-expanded .campaign-panel { flex-basis:8%; }.home-banner-block .campaign-panel.active,.home-banner-block .campaign-carousel.is-expanded .campaign-panel.active { flex-basis:76%; } }
+/* Preserve the supplied strip's horizontal panel boundaries while trimming its outer purple frame. */
+.home-banner-block .campaign-carousel .campaign-panels .campaign-panel[style*="lt-gift-cards-expanded.png"] { background-size:100vw auto; }
